@@ -75,9 +75,9 @@ test('Test RETURN Clause', (assert) => {
 
 test('Test RETURN Clause with id', (assert) => {
     let query = new QueryBuilder('Object').return('id').descOrderBy('name');
-    assert.equal(query.queryCypher(), 'MATCH (n:Object) RETURN ID(n) ORDER BY n.name DESC');
+    assert.equal(query.queryCypher(), 'MATCH (n:Object) RETURN n.id ORDER BY n.name DESC');
     query = new QueryBuilder('Object').return(['name', 'tes', 'id']).descOrderBy('name');
-    assert.equal(query.queryCypher(), 'MATCH (n:Object) RETURN n.name, n.tes, ID(n) ORDER BY n.name DESC');
+    assert.equal(query.queryCypher(), 'MATCH (n:Object) RETURN n.name, n.tes, n.id ORDER BY n.name DESC');
     assert.end();
 });
 

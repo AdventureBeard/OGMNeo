@@ -7,6 +7,7 @@ const OGMNeoNode = require('../lib/ogmneo-node');
 const OGMNeo = require('../lib/ogmneo');
 const OGMNeoQuery = require('../lib/ogmneo-query');
 const OGMNeoWhere = require('../lib/ogmneo-where');
+const uuid = require('uuid').v4;
 
 const _ = require('lodash');
 
@@ -26,7 +27,7 @@ test('Test Invalid Operation', (assert) => {
 
 //Testing OGMNeoOperationExecuter.write
 test('Test write type on operation', (assert) => {  
-    let create = OGMNeoNode.createOperation({name: 'Ayrton Senna', carNumber: 12 }, 'Person');
+    let create = OGMNeoNode.createOperation({id: uuid(), name: 'Ayrton Senna', carNumber: 12 }, 'Person');
     OGMNeoOperationExecuter.write((transaction) => {
         return OGMNeoOperationExecuter.execute(create, transaction)
                                .then((created) => {
@@ -45,8 +46,8 @@ test('Test write type on operation', (assert) => {
 });
 
 test('Test batch write type operations', (assert) => {  
-    let createUser1 = OGMNeoNode.createOperation({name: 'Ayrton Senna'}, 'Person');
-    let createUser2 = OGMNeoNode.createOperation({name: 'Alain Prost'}, 'Person');
+    let createUser1 = OGMNeoNode.createOperation({id: uuid(), name: 'Ayrton Senna'}, 'Person');
+    let createUser2 = OGMNeoNode.createOperation({id: uuid(), name: 'Alain Prost'}, 'Person');
 
     OGMNeoOperationExecuter.batchWriteOperations([createUser1, createUser2]).then((result) => {
         let created1 = result[0];

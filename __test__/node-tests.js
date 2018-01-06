@@ -8,21 +8,20 @@ const OGMNeoWhere = require('../lib/ogmneo-where');
 const _ = require('lodash');
 
 
-var nodeId = 0;
+var nodeId = 'c56a4180-65aa-42ec-a945-5fd21dec0538';
 
 test('Test create node', (assert) => {    
-    OGMNeoNode.create({ name: 'name1', tes: 3, array: ['das']}, 'test').then((node) => {
+    OGMNeoNode.create({ id: nodeId, name: 'name1', tes: 3, array: ['das']}, 'test').then((node) => {
         assert.notEqual(node, null);
         assert.notEqual(node.id, null);
         assert.deepEqual(node.name, 'name1');
         assert.deepEqual(node.tes, 3);
-        nodeId = node.id;
         assert.end();
     });
 });
 
 test('Test create node with DATE param', (assert) => {    
-    OGMNeoNode.create({ name: 'name1', date: new Date(), array: ['das']}, 'test')
+    OGMNeoNode.create({ id: nodeId, name: 'name1', date: new Date(), array: ['das']}, 'test')
     .then((node) => {
         assert.notEqual(node, null);
         assert.notEqual(node.id, null);
@@ -45,7 +44,7 @@ test('Test update node', (assert) => {
 test('Test FAIL update node', (assert) => {
     OGMNeoNode.update({ id: 'ddlkas', name: null, tes: 3 }).catch((error) => {
         assert.notEqual(error, null);
-        assert.equals(error.message, 'Node must have an integer id to be updated');
+        assert.equals(error.message, 'Node must have a GUID to be updated');
         assert.end();
     });
 });
@@ -222,7 +221,7 @@ test('Test execute query with NO results', (assert) => {
 
 //Tests for add and remove labels
 test('Test FAIL add label label not string', (assert) => {
-    OGMNeoNode.addLabelToNode('', 32).catch((error) => {
+    OGMNeoNode.addLabelToNode('', 'f4f8d2c1-21d7-4216-9470-683a9fe67f77').catch((error) => {
         assert.equal(error.message, 'label must be a non empty string');
         assert.end();
     });
@@ -230,7 +229,7 @@ test('Test FAIL add label label not string', (assert) => {
 
 test('Test FAIL add label id integer', (assert) => {
     OGMNeoNode.addLabelToNode('label', '').catch((error) => {
-        assert.equal(error.message, 'The nodeId must be an integer value');
+        assert.equal(error.message, 'The nodeId must be a GUID');
         assert.end();
     });
 });
@@ -259,7 +258,7 @@ test('Test success adding label', (assert) => {
 
 //================
 test('Test FAIL remove label not string', (assert) => {
-    OGMNeoNode.removeLabelFromNode('', 32).catch((error) => {
+    OGMNeoNode.removeLabelFromNode('', 'f4f8d2c1-21d7-4216-9470-683a9fe67f77').catch((error) => {
         assert.equal(error.message, 'label must be a non empty string');
         assert.end();
     });

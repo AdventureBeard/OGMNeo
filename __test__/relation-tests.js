@@ -8,6 +8,7 @@ const OGMQueryBuilder = require('../lib/ogmneo-query');
 const OGMNeoWhere = require('../lib/ogmneo-where');
 const OGMNeoQuery = require('../lib/ogmneo-query');
 const OGMNeoRelationQuery = require('../lib/ogmneo-relation-query');
+const uuid = require('uuid').v4;
 
 const _ = require('lodash');
 
@@ -15,7 +16,7 @@ var nodes;
 var relations;
 
 test('Setup', (assert) => {
-    let values = [{ name: 'Test1', value: 2 }, { name: 'Test2', value: 4 }];
+    let values = [{ id: uuid(), name: 'Test1', value: 2 }, { id: uuid(), name: 'Test2', value: 4 }];
     let promises = values.map((node) => { return OGMNeoNode.create(node, 'object'); });
     Promise.all(promises).then((all) => {
         nodes = all;
@@ -27,8 +28,8 @@ test('Setup', (assert) => {
 test('Test CREATE relation', (assert) => {
     let node1 = nodes[0];
     let node2 = nodes[1];
-    let rel1 = OGMNeoRelation.relate(node1.id, 'relatedto', node2.id, { property: 'a' });
-    let rel2 = OGMNeoRelation.relate(node1.id, 'relatedto', node2.id, {});
+    let rel1 = OGMNeoRelation.relate(node1.id, 'relatedto', node2.id, { property: 'a', id: uuid() });
+    let rel2 = OGMNeoRelation.relate(node1.id, 'relatedto', node2.id, { id: uuid() });
     Promise.all([rel1, rel2]).then((rels) => {
         assert.equal(rels.length, 2);
         let relation1 = rels[0];
